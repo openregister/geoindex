@@ -27,6 +27,8 @@
         <p>Or use your current location</p>
         <a href="#" id="current-location" class="button">Current location</a>
       </div>
+      <div class="column-thirds">
+        <p id="registration-district"></p>
     </div>
 
 {% endblock %}
@@ -53,6 +55,8 @@
         url: '/location/'+ position.coords.latitude+'/'+ position.coords.longitude+'.json',
         success: function(data) {
           console.log(data);
+          $('#registration-district').text(data.boundary.name);
+
         },
         error: function() {
           console.log("error");
