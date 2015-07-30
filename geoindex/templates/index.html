@@ -1,0 +1,26 @@
+
+{% extends "govuk_template.html" %}
+
+{% block content %}
+    <div class="grid-row">
+      <div class="column-two-thirds">
+        <h1 class="heading-large">What?</h1>
+      </div>
+    </div>
+{% endblock %}
+
+{% block body_end %}
+  <script type="text/javascript">
+    if ("geolocation" in navigator) {
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        alert('Your latitude: ' + position.coords.latitude);
+        alert('Your longitude: ' + position.coords.longitude);
+      });
+
+    } else {
+      alert('geo not available');
+    }
+  </script>
+{% endblock %}
+

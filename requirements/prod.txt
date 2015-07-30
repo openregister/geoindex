@@ -1,0 +1,16 @@
+Flask
+Flask-Migrate
+Flask-SQLAlchemy
+Flask-Script
+Flask-WTF
+GeoAlchemy2
+Jinja2
+Mako
+MarkupSafe
+SQLAlchemy
+WTForms
+Werkzeug
+alembic
+gunicorn
+itsdangerous
+psycopg2
