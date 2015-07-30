@@ -4,23 +4,59 @@
 {% block content %}
     <div class="grid-row">
       <div class="column-two-thirds">
-        <h1 class="heading-large">What?</h1>
+        <form id="postcode-form" class="form" action="{{url_for('frontend.index')}}" method="post">
+          <h1 class="form-title heading-large">Which registration district?</h1>
+          <div class="form-group">
+             <label class="form-label-bold" for="postcode">Enter a postcode</label>
+              <p class="form-hint">Find a registration district for a postcode</p>
+              {{ form.postcode(class_="form-control")|safe }}
+                {% if form.postcode.errors %}
+                  {% for error in form.postcode.errors %}
+                    <span class="error">{{error}}</span>
+                  {% endfor %}
+                {% endif %}
+          </div>
+          <div class="form-group">
+            <input type="submit" class="button" value="Continue">
+          </div>
+        </form>
       </div>
     </div>
+
 {% endblock %}
 
 {% block body_end %}
+
   <script type="text/javascript">
-    if ("geolocation" in navigator) {
 
-      navigator.geolocation.getCurrentPosition(function(position) {
-        alert('Your latitude: ' + position.coords.latitude);
-        alert('Your longitude: ' + position.coords.longitude);
+    var getLatLong = function(event) {
+      event.preventDefault();
+      var postcode = $('#postcode').val();
+      $.ajax({
+        type: 'GET',
+        url: "http://postcode.openregister.org/search?_representation=json&_query="+postcode,
+        success: function(data) {
+          alert(data);
+        },
+        error: function() {
+          alert("error");
+        }
+       });
+    };
+
+    $(document).ready(function() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+
+         // $('#postcode-form').submit(getLatLong);
+
+        //alert('Your latitude: ' + position.coords.latitude);
+        //alert('Your longitude: ' + position.coords.longitude);
       });
+      } else {
+        alert('geo not available');
+      }});
 
-    } else {
-      alert('geo not available');
-    }
   </script>
 {% endblock %}
 
