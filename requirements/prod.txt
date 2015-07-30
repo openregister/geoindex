@@ -14,3 +14,5 @@ alembic
 gunicorn
 itsdangerous
 psycopg2
+geojson
+Shapely

@@ -4,6 +4,13 @@ import os
 from flask.ext.script import Shell, Server, Manager
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.sqlalchemy import SQLAlchemy
+import geojson
+from zipfile import ZipFile
+from urllib.request import urlopen
+from io import BytesIO, TextIOWrapper
+from geoalchemy2.shape import from_shape
+from shapely.geometry import asShape
+
 
 from geoindex.factory import create_app
 app = create_app()
@@ -18,6 +25,27 @@ from geoindex.frontend.models import *
 
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
+
+
+@manager.command
+def load_geojson():
+    result = urlopen('https://github.com/openregister/boundaries/archive/master.zip').read()
+    stream = BytesIO(result)
+    zipfile = ZipFile(stream, 'r')
+    file_names = [name for name in zipfile.namelist()
+                  if name.endswith('.geojson')]
+    for name in file_names:
+        with zipfile.open(name, 'r') as f:
+            if name.endswith('.geojson'):
+                file_contents = TextIOWrapper(f, encoding='utf-8',
+                                          newline='')
+                data = geojson.loads(file_contents.read())
+                name = data['properties']['REGD14NM']
+                geometry = data['geometry']
+                polygon = from_shape(asShape(geometry), srid=4326)
+                boundary = Boundary(name=name, polygon=polygon)
+                db.session.add(boundary)
+                db.session.commit()
 
 if __name__ == '__main__':
     manager.run()
