@@ -25,7 +25,7 @@
     <div class="grid-row">
       <div class="column-two-thirds">
         <p>Or use your current location</p>
-        <a href="#" class="button">Current location</a>
+        <a href="#" id="current-location" class="button">Current location</a>
       </div>
     </div>
 
@@ -35,33 +35,34 @@
 
   <script type="text/javascript">
 
-    var getLatLong = function(event) {
-      event.preventDefault();
-      var postcode = $('#postcode').val();
-      $.ajax({
-        type: 'GET',
-        url: "http://postcode.openregister.org/search?_representation=json&_query="+postcode,
-        success: function(data) {
-          alert(data);
-        },
-        error: function() {
-          alert("error");
-        }
-       });
-    };
-
-    $(document).ready(function() {
+    var getPosition = function() {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
-
-         // $('#postcode-form').submit(getLatLong);
-
-        //alert('Your latitude: ' + position.coords.latitude);
-        //alert('Your longitude: ' + position.coords.longitude);
-      });
+          console.log('lat:' + position.coords.latitude + '/long:'+ position.coords.longitude);
+          getBoundary(position);
+        });
       } else {
-        alert('geo not available');
-      }});
+        alert('geolocation not available');
+        return {};
+      }
+    };
+
+    var getBoundary = function(position) {
+      $.ajax({
+        type: 'GET',
+        url: '/location/'+ position.coords.latitude+'/'+ position.coords.longitude+'.json',
+        success: function(data) {
+          console.log(data);
+        },
+        error: function() {
+          console.log("error");
+        }
+       });
+    }
+
+    $(document).ready(function() {
+      $("#current-location").click(getPosition);
+    });
 
   </script>
 {% endblock %}

@@ -6,7 +6,8 @@ from flask import (
     current_app,
     abort,
     url_for,
-    redirect
+    redirect,
+    jsonify
 )
 
 from sqlalchemy import func
@@ -35,7 +36,6 @@ def index():
             latitude = entry['entry']['latitude']
             longitude = entry['entry']['longitude']
             return redirect(url_for('frontend.location', latitude=latitude, longitude=longitude))
-
         except requests.exceptions.HTTPError as e:
             abort(resp.status_code)
     return render_template('index.html', form=form)
@@ -43,9 +43,21 @@ def index():
 
 @frontend.route('/location/<latitude>/<longitude>')
 def location(latitude, longitude):
+    current_app.logger.info('location')
+    boundary = _get_boundary(latitude, longitude)
+    return render_template('location.html', latitude=latitude, longitude=longitude, boundary=boundary)
+
+
+@frontend.route('/location/<latitude>/<longitude>.json')
+def location_json(latitude, longitude):
+    current_app.logger.info('location json')
+    boundary = _get_boundary(latitude, longitude)
+    return jsonify({'boundary': boundary.to_dict()})
+
+
+def _get_boundary(latitude, longitude):
     point = Point(float(longitude), float(latitude))
     wkb_element = from_shape(point, srid=4326)
-    boundaries = Boundary.query.filter(func.ST_Contains(Boundary.polygon, wkb_element)).all()
-    for boundary in boundaries:
-        current_app.logger.info(boundary.name)
-    return render_template('location.html', latitude=latitude, longitude=longitude, boundary=boundary)
+    boundary = Boundary.query.filter(func.ST_Contains(Boundary.polygon, wkb_element)).first()
+    current_app.logger.info(boundary.name)
+    return boundary
