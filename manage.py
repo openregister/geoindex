@@ -40,12 +40,21 @@ def load_geojson():
                 file_contents = TextIOWrapper(f, encoding='utf-8',
                                           newline='')
                 data = geojson.loads(file_contents.read())
-                name = data['properties']['REGD14NM']
-                geometry = data['geometry']
-                polygon = from_shape(asShape(geometry), srid=4326)
-                boundary = Boundary(name=name, polygon=polygon)
-                db.session.add(boundary)
-                db.session.commit()
+                try:
+                    name = data['properties']['REGD14NM']
+                    geometry = data['geometry']
+                    # hackery store everthing as multipolygon
+                    if geometry['type'] == 'Polygon':
+                        coordinates = []
+                        coordinates.append(geometry['coordinates'])
+                        geometry['coordinates'] = coordinates
+                        geometry['type'] = 'MultiPolygon'
+                    polygon = from_shape(asShape(geometry), srid=4326)
+                    boundary = Boundary(name=name, polygon=polygon)
+                    db.session.add(boundary)
+                    db.session.commit()
+                except KeyError as e:
+                    print("not something we were expecting really")
 
 if __name__ == '__main__':
     manager.run()

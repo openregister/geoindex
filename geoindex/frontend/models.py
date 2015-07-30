@@ -9,4 +9,4 @@ class Boundary(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    polygon = Column(Geometry('POLYGON', srid=4326))
+    polygon = Column(Geometry('MULTIPOLYGON', srid=4326))

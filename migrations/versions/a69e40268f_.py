@@ -1,13 +1,13 @@
 """empty message
 
-Revision ID: 4bf0ed0d60d
+Revision ID: a69e40268f
 Revises: None
-Create Date: 2015-07-30 11:55:13.107810
+Create Date: 2015-07-30 15:20:50.955082
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '4bf0ed0d60d'
+revision = 'a69e40268f'
 down_revision = None
 
 from alembic import op
@@ -20,7 +20,7 @@ def upgrade():
     op.create_table('boundary',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
-    sa.Column('polygon', geoalchemy2.types.Geometry(geometry_type='POLYGON', srid=4326), nullable=True),
+    sa.Column('polygon', geoalchemy2.types.Geometry(geometry_type='MULTIPOLYGON', srid=4326), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     ### end Alembic commands ###
