@@ -50,6 +50,9 @@ Deployment
 
 In your production environment, make sure the ``SETTINGS`` environment variable is set to ``config.Config``.
 
+Heroku
+------
+For heroku deployment use this buildpack [https://github.com/codeforamerica/heroku-buildpack-pygeo] which has all the geo prerequisites.
 
 Shell
 -----
