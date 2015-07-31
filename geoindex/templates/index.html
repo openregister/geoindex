@@ -1,6 +1,15 @@
 
 {% extends "govuk_template.html" %}
 
+{% block head %}
+  {% raw %}
+    <script id="location-template" type="text/x-jsrender">
+      <p id="point">Point (lat/long): {{:latitude}}/{{:longitude}}</p>
+      <p id="district-name">Registration district: {{:boundaryName}}</p>
+    </script>
+  {% endraw %}
+{% endblock %}
+
 {% block content %}
     <div class="grid-row">
       <div class="column-two-thirds">
@@ -23,12 +32,13 @@
       </div>
     </div>
     <div class="grid-row">
-      <div class="column-two-thirds">
+      <div class="column-third">
         <p>Or use your current location</p>
         <a href="#" id="current-location" class="button">Current location</a>
       </div>
-      <div class="column-thirds">
-        <p id="registration-district"></p>
+      <div class="column-two-thirds">
+        <div id="registration-district">
+        </div>
     </div>
 
 {% endblock %}
@@ -55,8 +65,14 @@
         url: '/location/'+ position.coords.latitude+'/'+ position.coords.longitude+'.json',
         success: function(data) {
           console.log(data);
-          $('#registration-district').text(data.boundary.name);
+          var template = $.templates("#location-template"),
+              html = template.render({
+                'latitude': position.coords.latitude,
+                'longitude': position.coords.longitude,
+                'boundaryName': data.boundary.name
 
+            });
+            $('#registration-district').append(html);
         },
         error: function() {
           console.log("error");
