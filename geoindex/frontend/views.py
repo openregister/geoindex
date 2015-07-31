@@ -43,14 +43,12 @@ def index():
 
 @frontend.route('/location/<latitude>/<longitude>')
 def location(latitude, longitude):
-    current_app.logger.info('location')
     boundary = _get_boundary(latitude, longitude)
     return render_template('location.html', latitude=latitude, longitude=longitude, boundary=boundary)
 
 
 @frontend.route('/location/<latitude>/<longitude>.json')
 def location_json(latitude, longitude):
-    current_app.logger.info('location json')
     boundary = _get_boundary(latitude, longitude)
     return jsonify({'boundary': boundary.to_dict()})
 
@@ -59,5 +57,5 @@ def _get_boundary(latitude, longitude):
     point = Point(float(longitude), float(latitude))
     wkb_element = from_shape(point, srid=4326)
     boundary = Boundary.query.filter(func.ST_Contains(Boundary.polygon, wkb_element)).first()
-    current_app.logger.info(boundary.name)
+    current_app.logger.info("boundary: " + boundary.name)
     return boundary
