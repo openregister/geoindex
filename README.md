@@ -2,6 +2,15 @@
 geoindex
 ===============================
 
+Requirements
+-----------
+- python 3.3
+- [GEOS](http://trac.osgeo.org/geos/)
+- [PROJ.4](http://trac.osgeo.org/proj/)
+- [GDAL](http://trac.osgeo.org/gdal/)
+- [Shapely](http://toblerity.org/shapely/)
+
+Note if running on heroku the last four listed above can be satisfied by using this [buildpack](https://github.com/codeforamerica/heroku-buildpack-pygeo)
 
 Quickstart
 ----------
@@ -52,7 +61,7 @@ In your production environment, make sure the ``SETTINGS`` environment variable 
 
 Heroku
 ------
-For heroku deployment use this buildpack [https://github.com/codeforamerica/heroku-buildpack-pygeo] which has all the geo prerequisites.
+For heroku deployment use this [buildpack](https://github.com/codeforamerica/heroku-buildpack-pygeo) which has all the geo prerequisites.
 
 Shell
 -----
