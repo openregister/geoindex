@@ -47,7 +47,8 @@
 
   <script type="text/javascript">
 
-    var getPosition = function() {
+    var getPosition = function(event) {
+      event.preventDefault();
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(function(position) {
           console.log('lat:' + position.coords.latitude + '/long:'+ position.coords.longitude);
