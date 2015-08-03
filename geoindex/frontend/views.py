@@ -1,3 +1,4 @@
+import json
 import requests
 
 from flask import (
@@ -44,13 +45,14 @@ def index():
 @frontend.route('/location/<latitude>/<longitude>')
 def location(latitude, longitude):
     boundary = _get_boundary(latitude, longitude)
-    return render_template('location.html', latitude=latitude, longitude=longitude, boundary=boundary)
+    geojson = json.dumps(boundary.to_dict())
+    return render_template('location.html', latitude=latitude, longitude=longitude, boundary=boundary, geojson=geojson)
 
 
-@frontend.route('/location/<latitude>/<longitude>.json')
+@frontend.route('/location/<latitude>/<longitude>.geojson')
 def location_json(latitude, longitude):
     boundary = _get_boundary(latitude, longitude)
-    return jsonify({'boundary': boundary.to_dict()})
+    return jsonify(boundary.to_dict())
 
 
 def _get_boundary(latitude, longitude):

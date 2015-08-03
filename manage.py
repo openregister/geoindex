@@ -42,6 +42,7 @@ def load_geojson():
                 data = geojson.loads(file_contents.read())
                 try:
                     name = data['properties']['REGD14NM']
+                    code = data['properties']['REGD14CD']
                     geometry = data['geometry']
                     # hackery store everthing as multipolygon
                     if geometry['type'] == 'Polygon':
@@ -50,7 +51,7 @@ def load_geojson():
                         geometry['coordinates'] = coordinates
                         geometry['type'] = 'MultiPolygon'
                     polygon = from_shape(asShape(geometry), srid=4326)
-                    boundary = Boundary(name=name, polygon=polygon)
+                    boundary = Boundary(name=name, code=code, polygon=polygon)
                     db.session.add(boundary)
                     db.session.commit()
                 except KeyError as e:

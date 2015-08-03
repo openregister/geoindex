@@ -1,5 +1,9 @@
-
 {% extends "govuk_template.html" %}
+
+{% block head %}
+<script src='https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+{% endblock %}
 
 {% block content %}
     <div class="grid-row">
@@ -8,9 +12,30 @@
         <p>Registration district: {{ boundary.name }}</p>
       </div>
     </div>
+    <div class="grid-row">
+
+    </div>
+
+<div id='map' style="min-height: 600px"></div>
 
 {% endblock %}
 
 
+{% block body_end %}
 
+<script type="text/javascript">
+  L.mapbox.accessToken = 'pk.eyJ1IjoiYXNoaW1hbGkiLCJhIjoiZGRkYmJiZDVjY2IwOTY4ODczZWE2OGFhM2Q0MjA3M2YifQ.C9NNJLCY_BQjtdfdDswlBg';
+
+  var map = L.mapbox.map('map', 'ashimali.ec6806c6')
+    .setView([{{latitude}}, {{longitude}}], 13);
+
+  L.mapbox.featureLayer()
+    .loadURL('/location/'+{{latitude}}+'/'+{{longitude}}+'.geojson')
+    .addTo(map);
+
+  L.marker([ {{latitude}}, {{longitude}} ]).addTo(map);
+
+</script>
+
+{% endblock %}
 

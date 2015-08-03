@@ -63,7 +63,7 @@
     var getBoundary = function(position) {
       $.ajax({
         type: 'GET',
-        url: '/location/'+ position.coords.latitude+'/'+ position.coords.longitude+'.json',
+        url: '/location/'+ position.coords.latitude+'/'+ position.coords.longitude+'.geojson',
         success: function(data) {
           console.log(data);
           var template = $.templates("#location-template"),
