@@ -70,7 +70,7 @@
               html = template.render({
                 'latitude': position.coords.latitude,
                 'longitude': position.coords.longitude,
-                'boundaryName': data.boundary.name
+                'boundaryName': data.properties.name
 
             });
             $('#registration-district').append(html);
