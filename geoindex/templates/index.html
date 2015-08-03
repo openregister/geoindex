@@ -1,14 +1,5 @@
+{% extends "base.html" %}
 
-{% extends "govuk_template.html" %}
-
-{% block head %}
-  {% raw %}
-    <script id="location-template" type="text/x-jsrender">
-      <p id="point">Point (lat/long): {{:latitude}}/{{:longitude}}</p>
-      <p id="district-name">Registration district: {{:boundaryName}}</p>
-    </script>
-  {% endraw %}
-{% endblock %}
 
 {% block content %}
     <div class="grid-row">
@@ -39,52 +30,7 @@
       <div class="column-two-thirds">
         <div id="registration-district">
         </div>
+        <div id='map' style="min-height: 500px"></div>
     </div>
 
 {% endblock %}
-
-{% block body_end %}
-
-  <script type="text/javascript">
-
-    var getPosition = function(event) {
-      event.preventDefault();
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          console.log('lat:' + position.coords.latitude + '/long:'+ position.coords.longitude);
-          getBoundary(position);
-        });
-      } else {
-        alert('geolocation not available');
-        return {};
-      }
-    };
-
-    var getBoundary = function(position) {
-      $.ajax({
-        type: 'GET',
-        url: '/location/'+ position.coords.latitude+'/'+ position.coords.longitude+'.geojson',
-        success: function(data) {
-          console.log(data);
-          var template = $.templates("#location-template"),
-              html = template.render({
-                'latitude': position.coords.latitude,
-                'longitude': position.coords.longitude,
-                'boundaryName': data.properties.name
-
-            });
-            $('#registration-district').append(html);
-        },
-        error: function() {
-          console.log("error");
-        }
-       });
-    }
-
-    $(document).ready(function() {
-      $("#current-location").click(getPosition);
-    });
-
-  </script>
-{% endblock %}
-
