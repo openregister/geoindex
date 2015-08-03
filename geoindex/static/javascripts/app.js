@@ -37,13 +37,11 @@ var renderMap = function(latitude, longitude, geojson) {
 
   L.mapbox.accessToken = 'pk.eyJ1IjoiYXNoaW1hbGkiLCJhIjoiZGRkYmJiZDVjY2IwOTY4ODczZWE2OGFhM2Q0MjA3M2YifQ.C9NNJLCY_BQjtdfdDswlBg';
 
-  var map = L.mapbox.map('map', 'ashimali.ec6806c6')
-    .setView([latitude, longitude], 13);
+  var map = L.mapbox.map('map', 'ashimali.ec6806c6');
+  var featureLayer = L.mapbox.featureLayer()
+    .setGeoJSON(geojson).addTo(map);
 
-  L.mapbox.featureLayer()
-    .setGeoJSON(geojson)
-    .addTo(map);
-
+  map.fitBounds(featureLayer.getBounds());
   L.marker([latitude, longitude]).addTo(map);
 
 }
