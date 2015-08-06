@@ -37,8 +37,8 @@ Prepare Postgres
 ----------------
 
 ```
-createdb -U [user name] [db name]
-psql -U [user name] -d [db name] -c 'CREATE EXTENSION postgis'
+createdb -U gis
+psql -d gis -c 'CREATE EXTENSION postgis'
 ```
 
 then create tables
@@ -48,10 +48,16 @@ python manage.py db migrate
 python manage.py upgrade
 ```
 
-Once that this all done you can:
+To load data run:
 
 ```
-python manage.py server
+python manage.py load_geojson
+```
+
+Once that this all done you can run the app:
+
+```
+./run.sh
 ```
 
 Deployment
@@ -63,11 +69,3 @@ Heroku
 ------
 For heroku deployment use this [buildpack](https://github.com/codeforamerica/heroku-buildpack-pygeo) which has all the geo prerequisites.
 
-Shell
------
-
-To open the interactive shell, run ::
-
-```
-python manage.py shell
-```
