@@ -38,7 +38,7 @@ then create tables
 
 ```
 source environment.sh
-python manage.py upgrade
+python manage.py db upgrade
 ```
 
 To load data run:
