@@ -26,18 +26,11 @@ Install python requirements.
 pip install -r requirements/dev.txt
 ```
 
-Set some environment variables. The following is required. Add as needed.
-
-```
-export SETTINGS='config.DevelopmentConfig'
-```
-
-
 Prepare Postgres
 ----------------
 
 ```
-createdb -U gis
+createdb gis
 psql -d gis -c 'CREATE EXTENSION postgis'
 ```
 
