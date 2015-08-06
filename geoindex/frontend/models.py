@@ -19,8 +19,6 @@ class Boundary(db.Model):
 
 
     def to_dict(self):
-        #TODO turn it into proper geojson and also
-        #reverse multipolygon if required
         boundary = {"type": "Feature", "properties": {}, "geometry": {}}
         boundary["properties"] = {"name": self.name, "code": self.code}
 
