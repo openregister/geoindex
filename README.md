@@ -37,7 +37,7 @@ psql -d gis -c 'CREATE EXTENSION postgis'
 then create tables
 
 ```
-python manage.py db migrate
+source environment.sh
 python manage.py upgrade
 ```
 
