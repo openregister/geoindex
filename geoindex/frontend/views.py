@@ -52,10 +52,6 @@ def location(latitude, longitude):
 @frontend.route('/location/<latitude>/<longitude>.json')
 def location_json(latitude, longitude):
     boundary = _get_boundary(latitude, longitude)
-
-    current_app.logger.info('long')
-    current_app.logger.info(longitude)
-
     return jsonify(boundary.to_dict())
 
 
