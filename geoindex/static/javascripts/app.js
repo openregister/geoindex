@@ -14,7 +14,7 @@ var getPosition = function(event) {
 var getBoundary = function(position) {
   $.ajax({
     type: 'GET',
-    url: '/location/'+ position.coords.latitude+'/'+ position.coords.longitude+'.geojson',
+    url: '/location/'+ position.coords.latitude+'/'+ position.coords.longitude+'.json',
     success: function(data) {
       console.log(data);
       var template = $.templates("#location-template"),

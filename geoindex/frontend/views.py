@@ -49,9 +49,13 @@ def location(latitude, longitude):
     return render_template('location.html', latitude=latitude, longitude=longitude, boundary=boundary, geojson=geojson)
 
 
-@frontend.route('/location/<latitude>/<longitude>.geojson')
+@frontend.route('/location/<latitude>/<longitude>.json')
 def location_json(latitude, longitude):
     boundary = _get_boundary(latitude, longitude)
+
+    current_app.logger.info('long')
+    current_app.logger.info(longitude)
+
     return jsonify(boundary.to_dict())
 
 
