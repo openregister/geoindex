@@ -47,6 +47,8 @@ To load data run:
 python manage.py load_geojson
 ```
 
+This loads the geojson data from: [https://github.com/openregister/boundaries](https://github.com/openregister/boundaries)
+
 Once that this all done you can run the app:
 
 ```
@@ -61,4 +63,6 @@ In your production environment, make sure the ``SETTINGS`` environment variable 
 Heroku
 ------
 For heroku deployment use this [buildpack](https://github.com/codeforamerica/heroku-buildpack-pygeo) which has all the geo prerequisites.
+
+This application is currently deployed at: [http://openregister-geoindex.herokuapp.com/](http://openregister-geoindex.herokuapp.com/)
 
